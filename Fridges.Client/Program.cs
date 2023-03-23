@@ -11,9 +11,14 @@ builder.Services.AddHttpClient("Fridges", httpClient =>
 {
     httpClient.BaseAddress = new Uri(host + "fridges/");
 });
+builder.Services.AddHttpClient("Products", httpClient =>
+{
+    httpClient.BaseAddress = new Uri(host + "products/");
+});
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<IFridgeService, FridgeService>();
+builder.Services.AddTransient<IProductService, ProductService>();
 
 var app = builder.Build();
 
