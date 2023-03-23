@@ -1,15 +1,25 @@
+using Fridges.Application.Services.Implementations;
+using Fridges.Application.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
+
+string host = "https://localhost:7256/api/";
+
+builder.Services.AddHttpClient("Fridges", httpClient =>
+{
+    httpClient.BaseAddress = new Uri(host + "fridges/");
+});
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<IFridgeService, FridgeService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

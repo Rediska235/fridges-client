@@ -1,0 +1,39 @@
+﻿@using Fridges.Client.Models.Entities;
+
+@model IEnumerable<Fridge>
+@{
+    ViewData["Title"] = "Fridges";
+}
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><a href="fridges/@item.Id">@item.Name</a></td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="@Url.Action("Edit", "FridgeController", new { id = item.Id })" class="btn btn-warning">Edit</a>
+                            <button type="button" class="btn btn-danger" onclick="deleteItem(@item.Id)">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function deleteItem(itemId) {
+        // code to handle deletion of item
+
+        //dialog window 
+    }
+</script>

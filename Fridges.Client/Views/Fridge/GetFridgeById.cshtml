@@ -1,0 +1,34 @@
+﻿@using Fridges.Client.Models.DTOs;
+
+@model FridgeWithProductsDto
+@{
+    ViewData["Title"] = "Fridges";
+}
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quanity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Quanity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function deleteItem(itemId) {
+        // code to handle deletion of item
+
+        //dialog window
+    }
+</script>
