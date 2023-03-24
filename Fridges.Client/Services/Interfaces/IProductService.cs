@@ -1,7 +1,7 @@
 ﻿using Fridges.Client.Models.DTOs;
 using Fridges.Client.Models.Entities;
 
-namespace Fridges.Application.Services.Interfaces;
+namespace Fridges.Client.Services.Interfaces;
 
 public interface IProductService
 {

@@ -1,5 +1,5 @@
-using Fridges.Application.Services.Implementations;
-using Fridges.Application.Services.Interfaces;
+using Fridges.Client.Services.Implementations;
+using Fridges.Client.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,10 +15,15 @@ builder.Services.AddHttpClient("Products", httpClient =>
 {
     httpClient.BaseAddress = new Uri(host + "products/");
 });
+builder.Services.AddHttpClient("FridgeModels", httpClient =>
+{
+    httpClient.BaseAddress = new Uri(host + "fridgemodels/");
+});
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<IFridgeService, FridgeService>();
 builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<IFridgeModelService, FridgeModelService>();
 
 var app = builder.Build();
 

@@ -1,4 +1,4 @@
-﻿using Fridges.Application.Services.Interfaces;
+﻿using Fridges.Client.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fridges.Client.Controllers;

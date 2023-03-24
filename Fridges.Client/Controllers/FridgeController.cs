@@ -1,4 +1,5 @@
-﻿using Fridges.Application.Services.Interfaces;
+﻿using Fridges.Client.Models.DTOs;
+using Fridges.Client.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fridges.Client.Controllers;
@@ -7,10 +8,12 @@ namespace Fridges.Client.Controllers;
 public class FridgeController : Controller
 {
     private readonly IFridgeService _fridgeService;
+    private readonly IFridgeModelService _fridgeModelService;
 
-    public FridgeController(IFridgeService fridgeService)
+    public FridgeController(IFridgeService fridgeService, IFridgeModelService fridgeModelService)
     {
         _fridgeService = fridgeService;
+        _fridgeModelService = fridgeModelService;
     }
 
     [HttpGet]
@@ -25,5 +28,21 @@ public class FridgeController : Controller
     {
         var fridge = _fridgeService.GetFridgeById(id);
         return View(fridge.Result);
+    }
+
+    [HttpGet("create")]
+    public async Task<IActionResult> Create()
+    {
+        var fridgeModels = _fridgeModelService.GetAllFridgeModels();
+        ViewBag.FridgeModels = fridgeModels.Result;
+        return View();
+    }
+
+    [HttpPost("create")]
+    public IActionResult Create(CreateFridgeDto createFridgeDto)
+    {
+        var fridge = _fridgeService.CreateFridge(createFridgeDto);
+        GetAllFridges();
+        return Ok(1);
     }
 }

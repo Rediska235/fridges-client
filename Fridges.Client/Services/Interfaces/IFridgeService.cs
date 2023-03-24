@@ -1,7 +1,7 @@
 ﻿using Fridges.Client.Models.DTOs;
 using Fridges.Client.Models.Entities;
 
-namespace Fridges.Application.Services.Interfaces;
+namespace Fridges.Client.Services.Interfaces;
 
 public interface IFridgeService
 {
@@ -11,7 +11,7 @@ public interface IFridgeService
     void AddProducts(Guid fridgeId, AddProductsDto addProductsDto);
     void RemoveProducts(Guid fridgeId, Guid productId);
     void UpdateProductsQuantity();
-    Fridge CreateFridge(CreateFridgeDto fridge);
+    Task<Fridge> CreateFridge(CreateFridgeDto fridge);
     Fridge UpdateFridge(UpdateFridgeDto updateFridgeDto);
     void DeleteFridge(Guid fridgeID);
 }

@@ -1,9 +1,11 @@
-﻿using Fridges.Application.Services.Interfaces;
+﻿using Fridges.Client.Services.Interfaces;
 using Fridges.Client.Models.DTOs;
 using Fridges.Client.Models.Entities;
 using Microsoft.Net.Http.Headers;
+using System.Net.Http;
+using System.Text.Json;
 
-namespace Fridges.Application.Services.Implementations;
+namespace Fridges.Client.Services.Implementations;
 
 public class FridgeService : IFridgeService
 {
@@ -69,9 +71,26 @@ public class FridgeService : IFridgeService
         throw new NotImplementedException();
     }
 
-    public Fridge CreateFridge(CreateFridgeDto createFridgeDto)
+    public async Task<Fridge> CreateFridge(CreateFridgeDto createFridgeDto)
     {
-        throw new NotImplementedException();
+        var fridge = new Fridge();
+
+        var uri = _httpClient.BaseAddress; 
+        var json = JsonSerializer.Serialize(createFridgeDto);
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Post,
+            RequestUri = uri,
+            Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+        };
+
+        using var response = await _httpClient.SendAsync(request);
+        if (response.IsSuccessStatusCode)
+        {
+            fridge = response.Content.ReadFromJsonAsync<Fridge>().Result;
+        }
+
+        return fridge;
     }
 
     public Fridge UpdateFridge(UpdateFridgeDto updateFridgeDto)
