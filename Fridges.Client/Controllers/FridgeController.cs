@@ -45,4 +45,22 @@ public class FridgeController : Controller
         GetAllFridges();
         return Ok(1);
     }
+
+    [HttpGet("edit/{id}")]
+    public async Task<IActionResult> Edit(Guid id)
+    {
+        var fridgeModels = _fridgeModelService.GetAllFridgeModels();
+        ViewBag.FridgeModels = fridgeModels.Result;
+        var fridge = _fridgeService.GetFridgeById(id);
+        ViewBag.Fridge = fridge.Result.Fridge;
+        return View();
+    }
+
+    [HttpPost("edit/{id}")]
+    public IActionResult Edit(UpdateFridgeDto updateFridgeDto)
+    {
+        var fridge = _fridgeService.UpdateFridge(updateFridgeDto);
+        GetAllFridges();
+        return Ok(2);
+    }
 }

@@ -22,7 +22,7 @@
                     <td>@item.OwnerName</td>
                     <td>
                         <div class="btn-group">
-                            <a href="@Url.Action("Edit", "FridgeController", new { id = item.Id })" class="btn btn-warning">Edit</a>
+                            <a href="/fridges/edit/@item.Id" class="btn btn-warning">Edit</a>
                             <button type="button" class="btn btn-danger" onclick="deleteItem(@item.Id)">Delete</button>
                         </div>
                     </td>

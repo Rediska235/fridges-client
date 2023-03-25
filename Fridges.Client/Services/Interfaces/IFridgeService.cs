@@ -12,6 +12,6 @@ public interface IFridgeService
     void RemoveProducts(Guid fridgeId, Guid productId);
     void UpdateProductsQuantity();
     Task<Fridge> CreateFridge(CreateFridgeDto fridge);
-    Fridge UpdateFridge(UpdateFridgeDto updateFridgeDto);
+    Task<Fridge> UpdateFridge(UpdateFridgeDto updateFridgeDto);
     void DeleteFridge(Guid fridgeID);
 }

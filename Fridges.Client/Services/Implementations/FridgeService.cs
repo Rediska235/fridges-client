@@ -93,9 +93,26 @@ public class FridgeService : IFridgeService
         return fridge;
     }
 
-    public Fridge UpdateFridge(UpdateFridgeDto updateFridgeDto)
+    public async Task<Fridge> UpdateFridge(UpdateFridgeDto updateFridgeDto)
     {
-        throw new NotImplementedException();
+        var fridge = new Fridge();
+
+        var uri = _httpClient.BaseAddress;
+        var json = JsonSerializer.Serialize(updateFridgeDto);
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Put,
+            RequestUri = uri,
+            Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+        };
+
+        using var response = await _httpClient.SendAsync(request);
+        if (response.IsSuccessStatusCode)
+        {
+            fridge = response.Content.ReadFromJsonAsync<Fridge>().Result;
+        }
+
+        return fridge;
     }
 
     public void DeleteFridge(Guid fridgeId)
