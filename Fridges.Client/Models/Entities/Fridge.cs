@@ -9,13 +9,24 @@ public class Fridge
     public Guid Id { get; set; }
 
     [MaxLength(50)]
-    public string Name { get; set; }
+    [Required(ErrorMessage = "This field is required.")]
+    public string Name { get; set; } = "";
 
     [MaxLength(30)]
-    public string? OwnerName { get; set; }
+    [Required(ErrorMessage = "This field is required.")]
+    public string? OwnerName { get; set; } = "";
 
     public FridgeModel FridgeModel { get; set; }
 
     [JsonIgnore]
     public List<FridgeProduct> FridgeProducts { get; set; }
+
+    public Fridge()
+    {
+        Id = Guid.NewGuid();
+        Name = "";
+        OwnerName = "";
+        FridgeModel = null;
+        FridgeProducts = null;
+    }
 }

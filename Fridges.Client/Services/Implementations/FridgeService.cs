@@ -1,9 +1,9 @@
 ﻿using Fridges.Client.Services.Interfaces;
 using Fridges.Client.Models.DTOs;
 using Fridges.Client.Models.Entities;
-using Microsoft.Net.Http.Headers;
-using System.Net.Http;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Fridges.Client.Services.Implementations;
 
@@ -99,6 +99,7 @@ public class FridgeService : IFridgeService
 
         var uri = _httpClient.BaseAddress;
         var json = JsonSerializer.Serialize(updateFridgeDto);
+
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Put,
@@ -115,8 +116,11 @@ public class FridgeService : IFridgeService
         return fridge;
     }
 
-    public void DeleteFridge(Guid fridgeId)
+    public async Task DeleteFridge(Guid fridgeId)
     {
-        throw new NotImplementedException();
+        var uri = QueryHelpers.AddQueryString(_httpClient.BaseAddress.ToString(), "Id", fridgeId.ToString());
+        var request = new HttpRequestMessage(HttpMethod.Delete, uri);
+
+        using var response = await _httpClient.SendAsync(request);
     }
 }

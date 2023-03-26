@@ -1,4 +1,5 @@
 ﻿using Fridges.Client.Models.DTOs;
+using Fridges.Client.Models.Entities;
 using Fridges.Client.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,15 +36,22 @@ public class FridgeController : Controller
     {
         var fridgeModels = _fridgeModelService.GetAllFridgeModels();
         ViewBag.FridgeModels = fridgeModels.Result;
-        return View();
+        ViewBag.Action = "Create";
+        return View("_FormPartial");
     }
 
     [HttpPost("create")]
     public IActionResult Create(CreateFridgeDto createFridgeDto)
     {
-        var fridge = _fridgeService.CreateFridge(createFridgeDto);
-        GetAllFridges();
-        return Ok(1);
+        if (ModelState.IsValid)
+        {
+            _fridgeService.CreateFridge(createFridgeDto);
+            var fridgeModels = _fridgeModelService.GetAllFridgeModels();
+
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridges", fridgeModels) });
+        }
+
+        return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_FormPartial", createFridgeDto) });
     }
 
     [HttpGet("edit/{id}")]
@@ -51,16 +59,39 @@ public class FridgeController : Controller
     {
         var fridgeModels = _fridgeModelService.GetAllFridgeModels();
         ViewBag.FridgeModels = fridgeModels.Result;
-        var fridge = _fridgeService.GetFridgeById(id);
-        ViewBag.Fridge = fridge.Result.Fridge;
-        return View();
+        var fridge = _fridgeService.GetFridgeById(id).Result.Fridge;
+        ViewBag.Action = "Edit";
+        var fridgeDto = new FridgeDto()
+        {
+            Id = fridge.Id,
+            Name = fridge.Name,
+            OwnerName = fridge.OwnerName,
+            FridgeModelId = fridge.FridgeModel.Id,
+            FridgeModelName = fridge.FridgeModel.Name
+        };
+        return View("_FormPartial", fridgeDto);
     }
 
     [HttpPost("edit/{id}")]
     public IActionResult Edit(UpdateFridgeDto updateFridgeDto)
     {
-        var fridge = _fridgeService.UpdateFridge(updateFridgeDto);
-        GetAllFridges();
-        return Ok(2);
+        if (ModelState.IsValid)
+        {
+            _fridgeService.UpdateFridge(updateFridgeDto);
+            var fridgeModels = _fridgeModelService.GetAllFridgeModels();
+
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridges", fridgeModels) });
+        }
+
+        return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_FormPartial", updateFridgeDto) });
+    }
+
+    [HttpPost("delete/{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        _fridgeService.DeleteFridge(id);
+        var fridgeModels = _fridgeModelService.GetAllFridgeModels();
+
+        return Json(new { html = Helper.RenderRazorViewToString(this, "GetAllFridges", fridgeModels) });
     }
 }
