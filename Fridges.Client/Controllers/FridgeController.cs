@@ -1,5 +1,4 @@
 ﻿using Fridges.Client.Models.DTOs;
-using Fridges.Client.Models.Entities;
 using Fridges.Client.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,23 +40,36 @@ public class FridgeController : Controller
     }
 
     [HttpPost("create")]
-    public IActionResult Create(CreateFridgeDto createFridgeDto)
+    public async Task<IActionResult> Create(FridgeDto fridgeDto)
     {
         if (ModelState.IsValid)
         {
-            _fridgeService.CreateFridge(createFridgeDto);
+            _fridgeService.CreateFridge(fridgeDto);
+            var fridges = _fridgeService.GetAllFridges();
 
-            return RedirectToAction("GetAllFridges", "Fridge");
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridges", fridges) });
         }
 
-        return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_FormPartial", createFridgeDto) });
+        var fridgeModels = _fridgeModelService.GetAllFridgeModels().Result;
+        ViewBag.FridgeModels = fridgeModels;
+        ViewBag.Action = "Create";
+
+        string fridgeModelName = null;
+        if (fridgeDto.FridgeModelId != null)
+        {
+            fridgeModelName = fridgeModels.First(f => f.Id == fridgeDto.FridgeModelId).Name;
+        }
+
+        fridgeDto.FridgeModelName = fridgeModelName;
+
+        return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_FormPartial", fridgeDto) });
     }
 
     [HttpGet("edit/{id}")]
     public async Task<IActionResult> Edit(Guid id)
     {
-        var fridgeModels = _fridgeModelService.GetAllFridgeModels();
-        ViewBag.FridgeModels = fridgeModels.Result;
+        var fridgeModels = _fridgeModelService.GetAllFridgeModels().Result;
+        ViewBag.FridgeModels = fridgeModels;
         var fridge = _fridgeService.GetFridgeById(id).Result.Fridge;
         ViewBag.Action = "Edit";
 
@@ -74,23 +86,30 @@ public class FridgeController : Controller
     }
 
     [HttpPost("edit/{id}")]
-    public IActionResult Edit(UpdateFridgeDto updateFridgeDto)
+    public IActionResult Edit(FridgeDto fridgeDto)
     {
         if (ModelState.IsValid)
         {
-            _fridgeService.UpdateFridge(updateFridgeDto);
+            _fridgeService.UpdateFridge(fridgeDto);
+            var fridges = _fridgeService.GetAllFridges();
 
-            return RedirectToAction("GetAllFridges", "Fridge");
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridges", fridges) });
         }
 
-        return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_FormPartial", updateFridgeDto) });
+        var fridgeModels = _fridgeModelService.GetAllFridgeModels().Result;
+        ViewBag.FridgeModels = fridgeModels;
+        ViewBag.Action = "Edit";
+        string a = Helper.RenderRazorViewToString(this, "_FormPartial", fridgeDto);
+
+        return Json(new { isValid = false, html = a });
     }
 
     [HttpPost("delete/{id}")]
     public IActionResult Delete(Guid id)
     {
         _fridgeService.DeleteFridge(id);
+        var fridges = _fridgeService.GetAllFridges();
 
-        return RedirectToAction("GetAllFridges", "Fridge");
+        return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridges", fridges) });
     }
 }

@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="@ViewBag.Action" method="post">
+        <form asp-action="@ViewBag.Action" method="post" onsubmit="return jQueryAjaxPost(this);">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <input asp-for="Id" type="hidden" />
@@ -25,24 +25,32 @@
                 <span asp-validation-for="OwnerName" class="text-danger"></span>
             </div>
 
-            <input id="fridge-model-input" asp-for="FridgeModelId" type="hidden" class="form-control" />
+            <input id="fridge-model-input" asp-for="FridgeModelId" type="hidden" />
             <div id="dropdown" class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle mt-3" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     @try
                     {
-                        <span>@Model.FridgeModelName</span>
+                        if (Model.FridgeModelName == null)
+                        {
+                            <span>Select fridge model</span>
+                        }
+                        else
+                        {
+                            <span>@Model.FridgeModelName</span>
+                        }
                     }
                     catch
                     {
                         <span>Select fridge model</span>
                     }
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <span asp-validation-for="FridgeModelId" class="text-danger"></span>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     @foreach (var fridgeModel in ViewBag.FridgeModels)
                     {
-                        <p class="dropdown-item" fridge-model="@fridgeModel.Id">@fridgeModel.Name</p>
+                        <li><a class="dropdown-item py-2" fridge-model="@fridgeModel.Id">@fridgeModel.Name</a></li>
                     }
-                </div>
+                </ul>
             </div>
 
             <div class="form-group">

@@ -4,6 +4,7 @@ using Fridges.Client.Models.Entities;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Xml.Linq;
 
 namespace Fridges.Client.Services.Implementations;
 
@@ -71,11 +72,18 @@ public class FridgeService : IFridgeService
         throw new NotImplementedException();
     }
 
-    public async Task<Fridge> CreateFridge(CreateFridgeDto createFridgeDto)
+    public async Task<Fridge> CreateFridge(FridgeDto fridgeDto)
     {
         var fridge = new Fridge();
 
-        var uri = _httpClient.BaseAddress; 
+        var uri = _httpClient.BaseAddress;
+
+        var createFridgeDto = new CreateFridgeDto()
+        {
+            Name = fridgeDto.Name,
+            OwnerName = fridgeDto.OwnerName,
+            FridgeModelId = fridgeDto.FridgeModelId
+        };
         var json = JsonSerializer.Serialize(createFridgeDto);
         var request = new HttpRequestMessage
         {
@@ -93,11 +101,19 @@ public class FridgeService : IFridgeService
         return fridge;
     }
 
-    public async Task<Fridge> UpdateFridge(UpdateFridgeDto updateFridgeDto)
+    public async Task<Fridge> UpdateFridge(FridgeDto fridgeDto)
     {
         var fridge = new Fridge();
 
         var uri = _httpClient.BaseAddress;
+
+        var updateFridgeDto = new UpdateFridgeDto()
+        {
+            Id = fridgeDto.Id,
+            Name = fridgeDto.Name,
+            OwnerName = fridgeDto.OwnerName,
+            FridgeModelId = fridgeDto.FridgeModelId
+        };
         var json = JsonSerializer.Serialize(updateFridgeDto);
 
         var request = new HttpRequestMessage

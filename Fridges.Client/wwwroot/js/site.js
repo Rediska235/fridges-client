@@ -1,14 +1,4 @@
-﻿$(function () {
-    $("#loaderbody").addClass('hide');
-
-    $(document).bind('ajaxStart', function () {
-        $("#loaderbody").removeClass('hide');
-    }).bind('ajaxStop', function () {
-        $("#loaderbody").addClass('hide');
-    });
-});
-
-showInPopup = (url, title) => {
+﻿showInPopup = (url, title) => {
     $.ajax({
         type: 'GET',
         url: url,
@@ -30,13 +20,15 @@ jQueryAjaxPost = form => {
             processData: false,
             success: function (res) {
                 if (res.isValid) {
-                    $('#view-all').html(res.html)
+                    $('#view-all').html(res.html);
                     $('#form-modal .modal-body').html('');
                     $('#form-modal .modal-title').html('');
                     $('#form-modal').modal('hide');
+                    location.reload();
                 }
-                else
+                else {
                     $('#form-modal .modal-body').html(res.html);
+                }
             },
             error: function (err) {
                 console.log(err)
@@ -49,18 +41,19 @@ jQueryAjaxPost = form => {
     }
 }
 
-jQueryAjaxDelete = form => {
-    if (confirm('Are you sure to delete this fridge?')) {
+jQueryAjaxDelete = (action) => {
+    let res = confirm('Are you sure to delete this fridge?');
+    if (res) {
         try {
             $.ajax({
                 type: 'POST',
-                url: form.action
+                url: action,
+                success: function (html) {
+                    location.reload();
+                }
             })
         } catch (ex) {
             console.log(ex)
         }
     }
-
-    //prevent default form submit event
-    return false;
 }

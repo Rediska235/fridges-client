@@ -9,11 +9,9 @@ public class Fridge
     public Guid Id { get; set; }
 
     [MaxLength(50)]
-    [Required(ErrorMessage = "This field is required.")]
     public string Name { get; set; } = "";
 
     [MaxLength(30)]
-    [Required(ErrorMessage = "This field is required.")]
     public string? OwnerName { get; set; } = "";
 
     public FridgeModel FridgeModel { get; set; }

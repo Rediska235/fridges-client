@@ -4,16 +4,18 @@ namespace Fridges.Client.Models.DTOs;
 
 public class FridgeDto
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
 
-    [MaxLength(50)]
+    [Required]
+    [StringLength(50, MinimumLength = 2)]
     public string Name { get; set; }
 
-    [MaxLength(30)]
+    [Required]
+    [StringLength(30, MinimumLength = 2)]
     public string? OwnerName { get; set; }
 
-    public Guid FridgeModelId { get; set; }
+    [Required(ErrorMessage = "Fridge model is required")]
+    public Guid? FridgeModelId { get; set; }
 
-    [MaxLength(50)]
     public string? FridgeModelName { get; set; }
 }

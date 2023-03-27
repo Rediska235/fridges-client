@@ -10,5 +10,5 @@ public class CreateFridgeDto
     [MaxLength(30)]
     public string? OwnerName { get; set; }
 
-    public Guid FridgeModelId { get; set; }
+    public Guid? FridgeModelId { get; set; }
 }
