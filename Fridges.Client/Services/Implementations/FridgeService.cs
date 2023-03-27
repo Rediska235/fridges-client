@@ -118,7 +118,7 @@ public class FridgeService : IFridgeService
 
     public async Task DeleteFridge(Guid fridgeId)
     {
-        var uri = QueryHelpers.AddQueryString(_httpClient.BaseAddress.ToString(), "Id", fridgeId.ToString());
+        var uri = _httpClient.BaseAddress + fridgeId.ToString();
         var request = new HttpRequestMessage(HttpMethod.Delete, uri);
 
         using var response = await _httpClient.SendAsync(request);

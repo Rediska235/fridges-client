@@ -46,9 +46,8 @@ public class FridgeController : Controller
         if (ModelState.IsValid)
         {
             _fridgeService.CreateFridge(createFridgeDto);
-            var fridgeModels = _fridgeModelService.GetAllFridgeModels();
 
-            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridges", fridgeModels) });
+            return RedirectToAction("GetAllFridges", "Fridge");
         }
 
         return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_FormPartial", createFridgeDto) });
@@ -61,6 +60,7 @@ public class FridgeController : Controller
         ViewBag.FridgeModels = fridgeModels.Result;
         var fridge = _fridgeService.GetFridgeById(id).Result.Fridge;
         ViewBag.Action = "Edit";
+
         var fridgeDto = new FridgeDto()
         {
             Id = fridge.Id,
@@ -69,6 +69,7 @@ public class FridgeController : Controller
             FridgeModelId = fridge.FridgeModel.Id,
             FridgeModelName = fridge.FridgeModel.Name
         };
+
         return View("_FormPartial", fridgeDto);
     }
 
@@ -78,9 +79,8 @@ public class FridgeController : Controller
         if (ModelState.IsValid)
         {
             _fridgeService.UpdateFridge(updateFridgeDto);
-            var fridgeModels = _fridgeModelService.GetAllFridgeModels();
 
-            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridges", fridgeModels) });
+            return RedirectToAction("GetAllFridges", "Fridge");
         }
 
         return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_FormPartial", updateFridgeDto) });
@@ -90,8 +90,7 @@ public class FridgeController : Controller
     public IActionResult Delete(Guid id)
     {
         _fridgeService.DeleteFridge(id);
-        var fridgeModels = _fridgeModelService.GetAllFridgeModels();
 
-        return Json(new { html = Helper.RenderRazorViewToString(this, "GetAllFridges", fridgeModels) });
+        return RedirectToAction("GetAllFridges", "Fridge");
     }
 }

@@ -11,7 +11,7 @@
         <form asp-action="@ViewBag.Action" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <input asp-for="Id" type="hidden" class="form-control" />
+            <input asp-for="Id" type="hidden" />
 
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -59,11 +59,9 @@
 
     dropdownItems.forEach(item => {
         item.addEventListener('click', () => {
-            // Get the value of the selected item
             const selectedItemName = item.innerHTML;
             const selectedItem = item.getAttribute('fridge-model');
 
-            // Set the text of the dropdown button to the selected item value
             fridgeModelInput.value = selectedItem;
             dropdownMenuButton.innerText = selectedItemName;
         });

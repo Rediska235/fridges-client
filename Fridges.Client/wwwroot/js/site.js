@@ -54,16 +54,7 @@ jQueryAjaxDelete = form => {
         try {
             $.ajax({
                 type: 'POST',
-                url: form.action,
-                data: new FormData(form),
-                contentType: false,
-                processData: false,
-                success: function (res) {
-                    $('#view-all').html(res.html);
-                },
-                error: function (err) {
-                    console.log(err)
-                }
+                url: form.action
             })
         } catch (ex) {
             console.log(ex)
