@@ -5,22 +5,64 @@
     ViewData["Title"] = "Fridge";
 }
 
-<div class="table-responsive">
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Quanity</th>
-            </tr>
-        </thead>
-        <tbody>
+<div class="container">
+    <div class="row">
+        @{
+            int index = 1;
             @foreach (var item in Model.Products)
             {
-                <tr>
-                    <td>@item.Product.Name</td>
-                    <td>@item.Quanity</td>
-                </tr>
+                string src = Url.Content($"~/img/i{index}.png");
+                <div class="col-md-3">
+                    <div class="card mb-3 shadow-sm">
+                        <div class="thumb-content parent">
+                            <img class="card-img-top img-fluid image-center" src=@src alt=@item.Product.Name>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">@item.Product.Name</p>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <div class="btn-group quantity-counter col-md-4">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary decrement-btn">-</button>
+                                    <input type="text" class="form-control border-0 quantity-input" value="@item.Quantity" min="0">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary increment-btn">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                index++;
             }
-        </tbody>
-    </table>
+        }
+    </div>
 </div>
+
+<script>
+    // Get all the product cards
+    const productCards = document.querySelectorAll(".quantity-counter");
+
+    // Loop through each product card and add event listeners to the buttons
+    productCards.forEach((productCard) => {
+        // Get the increment and decrement buttons and quantity input
+        const decrementBtn = productCard.querySelector(".decrement-btn");
+        const incrementBtn = productCard.querySelector(".increment-btn");
+        const quantityInput = productCard.querySelector(".quantity-input");
+
+        // Add event listeners to the buttons
+        decrementBtn.addEventListener("click", () => {
+            // Decrease the quantity by 1
+            let newQuantity = parseInt(quantityInput.value) - 1;
+            if (newQuantity < 0) {
+                newQuantity = 0;
+            }
+            quantityInput.value = newQuantity;
+        });
+
+        incrementBtn.addEventListener("click", () => {
+            // Increase the quantity by 1
+            let newQuantity = parseInt(quantityInput.value) + 1;
+            quantityInput.value = newQuantity;
+        });
+
+    });
+
+</script>

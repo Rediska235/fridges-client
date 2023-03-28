@@ -26,8 +26,8 @@ public class FridgeController : Controller
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetFridgeById(Guid id)
     {
-        var fridge = _fridgeService.GetFridgeById(id);
-        return View(fridge.Result);
+        var fridge = _fridgeService.GetFridgeById(id).Result;
+        return View(fridge);
     }
 
     [HttpGet("create")]
