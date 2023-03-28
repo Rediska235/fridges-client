@@ -31,9 +31,14 @@ public class ProductService : IProductService
         return products;
     }
 
-    public async Task<Product> GetProductById(Guid productId)
+    public async Task<Product> GetProductById(Guid? productId)
     {
         var product = new Product();
+
+        if(productId == null)
+        {
+            return product;
+        }
 
         var response = await _httpClient.GetAsync($"{productId}");
         if (response.IsSuccessStatusCode)

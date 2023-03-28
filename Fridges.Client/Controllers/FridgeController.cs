@@ -9,11 +9,13 @@ public class FridgeController : Controller
 {
     private readonly IFridgeService _fridgeService;
     private readonly IFridgeModelService _fridgeModelService;
+    private readonly IProductService _productService;
 
-    public FridgeController(IFridgeService fridgeService, IFridgeModelService fridgeModelService)
+    public FridgeController(IFridgeService fridgeService, IFridgeModelService fridgeModelService, IProductService productService)
     {
         _fridgeService = fridgeService;
         _fridgeModelService = fridgeModelService;
+        _productService = productService;
     }
 
     [HttpGet]
@@ -99,9 +101,8 @@ public class FridgeController : Controller
         var fridgeModels = _fridgeModelService.GetAllFridgeModels().Result;
         ViewBag.FridgeModels = fridgeModels;
         ViewBag.Action = "Edit";
-        string a = Helper.RenderRazorViewToString(this, "_FormPartial", fridgeDto);
 
-        return Json(new { isValid = false, html = a });
+        return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_FormPartial", fridgeDto) });
     }
 
     [HttpPost("delete/{id}")]
@@ -111,5 +112,32 @@ public class FridgeController : Controller
         var fridges = _fridgeService.GetAllFridges();
 
         return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridges", fridges) });
+    }
+
+    [HttpGet("{fridgeId}/products")]
+    public async Task<IActionResult> AddProducts()
+    {
+        ViewBag.Products = _productService.GetAllProducts().Result;
+        ViewBag.Action = "AddProducts";
+
+        return View("_AddProductsPartial");
+    }
+
+    [HttpPost("{fridgeId:guid}/products")]
+    public IActionResult AddProducts(AddProductsDto addProductsDto)
+    {
+        if (ModelState.IsValid)
+        {
+            _fridgeService.AddProducts(addProductsDto);
+            var fridge = _fridgeService.GetFridgeById(addProductsDto.FridgeId).Result;
+
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetFridgeById", fridge) });
+        }
+
+        ViewBag.Products = _productService.GetAllProducts().Result;
+        ViewBag.Action = "AddProducts";
+        ViewBag.ProductName = _productService.GetProductById(addProductsDto.ProductId).Result.Name;
+
+        return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_AddProductsPartial", addProductsDto) });
     }
 }

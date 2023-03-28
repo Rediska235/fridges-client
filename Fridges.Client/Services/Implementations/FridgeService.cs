@@ -2,9 +2,6 @@
 using Fridges.Client.Models.DTOs;
 using Fridges.Client.Models.Entities;
 using System.Text.Json;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.WebUtilities;
-using System.Xml.Linq;
 
 namespace Fridges.Client.Services.Implementations;
 
@@ -38,7 +35,7 @@ public class FridgeService : IFridgeService
         return fridges;
     }
 
-    public async Task<FridgeWithProductsDto> GetFridgeById(Guid fridgeId)
+    public async Task<FridgeWithProductsDto> GetFridgeById(Guid? fridgeId)
     {
         var fridge = new FridgeWithProductsDto();
 
@@ -56,9 +53,20 @@ public class FridgeService : IFridgeService
         throw new NotImplementedException();
     }
 
-    public void AddProducts(Guid fridgeId, AddProductsDto addProductsDto)
+    public async Task AddProducts(AddProductsDto addProductsDto)
     {
-        throw new NotImplementedException();
+        var uri = new Uri(_httpClient.BaseAddress + addProductsDto.FridgeId.ToString() + "/products");
+
+        var json = JsonSerializer.Serialize(addProductsDto);
+
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Post,
+            RequestUri = uri,
+            Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+        };
+
+        await _httpClient.SendAsync(request);
     }
 
     public void RemoveProducts(Guid fridgeId, Guid productId)

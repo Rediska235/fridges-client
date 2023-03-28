@@ -6,9 +6,9 @@ namespace Fridges.Client.Services.Interfaces;
 public interface IFridgeService
 {
     Task<IEnumerable<Fridge>> GetAllFridges();
-    Task<FridgeWithProductsDto> GetFridgeById(Guid fridgeId);
+    Task<FridgeWithProductsDto> GetFridgeById(Guid? fridgeId);
     IEnumerable<ProductQuantity> GetProductsByFridgeId(Guid fridgeId);
-    void AddProducts(Guid fridgeId, AddProductsDto addProductsDto);
+    Task AddProducts(AddProductsDto addProductsDto);
     void RemoveProducts(Guid fridgeId, Guid productId);
     void UpdateProductsQuantity();
     Task<Fridge> CreateFridge(FridgeDto fridgeDto);
