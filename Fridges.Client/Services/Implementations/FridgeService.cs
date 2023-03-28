@@ -69,9 +69,17 @@ public class FridgeService : IFridgeService
         await _httpClient.SendAsync(request);
     }
 
-    public void RemoveProducts(Guid fridgeId, Guid productId)
+    public async Task RemoveProducts(Guid fridgeId, Guid productId)
     {
-        throw new NotImplementedException();
+        var uri = new Uri(_httpClient.BaseAddress + $"{fridgeId}/products/{productId}");
+
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = uri
+        };
+
+        await _httpClient.SendAsync(request);
     }
     
     public void UpdateProductsQuantity()

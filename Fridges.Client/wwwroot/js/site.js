@@ -41,8 +41,8 @@ jQueryAjaxPost = form => {
     }
 }
 
-jQueryAjaxDelete = (action) => {
-    let res = confirm('Are you sure to delete this fridge?');
+jQueryAjaxDelete = (action, objectType) => {
+    let res = confirm('Are you sure to delete this ' + objectType + '?');
     if (res) {
         try {
             $.ajax({

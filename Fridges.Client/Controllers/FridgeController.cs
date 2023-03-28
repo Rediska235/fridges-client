@@ -140,4 +140,13 @@ public class FridgeController : Controller
 
         return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_AddProductsPartial", addProductsDto) });
     }
+
+    [HttpPost("{fridgeId:guid}/products/{productId:guid}/delete")]
+    public IActionResult DeleteProducts(Guid fridgeId, Guid productId)
+    {
+        _fridgeService.RemoveProducts(fridgeId, productId);
+        var fridge = _fridgeService.GetFridgeById(fridgeId).Result;
+
+        return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetFridgeById", fridge) });
+    }
 }

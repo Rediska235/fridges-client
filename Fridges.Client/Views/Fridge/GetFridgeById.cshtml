@@ -30,6 +30,8 @@
                                     <input type="number" class="form-control border-0 quantity-input" value="@item.Quantity" min="0">
                                     <button type="button" class="btn btn-sm btn-outline-secondary increment-btn">+</button>
                                 </div>
+
+                                <button class="btn btn-danger" onclick="jQueryAjaxDelete('@Model.Fridge.Id/products/@item.Product.Id/delete', 'product')">Delete</button>
                             </div>
                         </div>
                     </div>

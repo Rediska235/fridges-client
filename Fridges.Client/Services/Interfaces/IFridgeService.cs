@@ -9,7 +9,7 @@ public interface IFridgeService
     Task<FridgeWithProductsDto> GetFridgeById(Guid? fridgeId);
     IEnumerable<ProductQuantity> GetProductsByFridgeId(Guid fridgeId);
     Task AddProducts(AddProductsDto addProductsDto);
-    void RemoveProducts(Guid fridgeId, Guid productId);
+    Task RemoveProducts(Guid fridgeId, Guid productId);
     void UpdateProductsQuantity();
     Task<Fridge> CreateFridge(FridgeDto fridgeDto);
     Task<Fridge> UpdateFridge(FridgeDto fridgeDto);
