@@ -21,8 +21,8 @@ public class FridgeController : Controller
     [HttpGet]
     public async Task<IActionResult> GetAllFridges()
     {
-        var fridges = _fridgeService.GetAllFridges();
-        return View(fridges.Result);
+        var fridges = _fridgeService.GetAllFridges().Result;
+        return View(fridges);
     }
 
     [HttpGet("{id:guid}")]
@@ -35,8 +35,8 @@ public class FridgeController : Controller
     [HttpGet("create")]
     public async Task<IActionResult> Create()
     {
-        var fridgeModels = _fridgeModelService.GetAllFridgeModels();
-        ViewBag.FridgeModels = fridgeModels.Result;
+        var fridgeModels = _fridgeModelService.GetAllFridgeModels().Result;
+        ViewBag.FridgeModels = fridgeModels;
         ViewBag.Action = "Create";
         return View("_FormPartial");
     }
