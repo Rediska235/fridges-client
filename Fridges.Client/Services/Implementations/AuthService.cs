@@ -40,7 +40,7 @@ public class AuthService : IAuthService
         }
 
         string errorMessage = await response.Content.ReadAsStringAsync();
-        errorMessage = errorMessage.Replace("\"", "");
+        errorMessage = errorMessage.Substring(10, errorMessage.Length - 12);
 
         return errorMessage;
     }
@@ -69,7 +69,7 @@ public class AuthService : IAuthService
         }
 
         string errorMessage = await response.Content.ReadAsStringAsync();
-        errorMessage = errorMessage.Replace("\"", "");
+        errorMessage = errorMessage.Substring(10, errorMessage.Length - 12);
 
         return errorMessage;
     }
