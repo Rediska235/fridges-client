@@ -3,6 +3,15 @@
 @model IEnumerable<Product>
 @{
     ViewData["Title"] = "Products";
+    bool isProductMaker = JwtManager.IsAllowed(Context, "Product-maker");
+}
+
+@if (isProductMaker)
+{
+    <div class="d-flex justify-content-between p-3">
+        <h2>Products (admin panel)</h2>
+        <a onclick="showInPopup('@Url.Action("Create")','Add product')" class="btn btn-success float-end">Add product</a>
+    </div>
 }
 
 <div class="container">
@@ -21,10 +30,13 @@
                             <p class="card-text">@item.Name</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">Default quantity: @item.DefaultQuantity</small>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-warning">Edit</button>
-                                    <button type="button" class="btn btn-danger">Delete</button>
-                                </div>
+                                @if (isProductMaker)
+                                {
+                                    <div class="btn-group">
+                                        <a onclick="showInPopup('@Url.Action("Edit", "Product", new { Id= item.Id })','Edit product')" class="btn btn-warning">Edit</a>
+                                        <button class="btn btn-danger" onclick="jQueryAjaxDelete('products/delete/@item.Id', 'product')">Delete</button>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>

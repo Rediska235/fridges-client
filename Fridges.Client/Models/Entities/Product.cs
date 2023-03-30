@@ -5,14 +5,15 @@ namespace Fridges.Client.Models.Entities;
 
 public class Product
 {
-    [Key]
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
 
+    [Required]
     [MaxLength(30)]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
+    [Required]
     public int? DefaultQuantity { get; set; }
 
     [JsonIgnore]
-    public List<FridgeProduct> FridgeProducts { get; set; }
+    public List<FridgeProduct>? FridgeProducts { get; set; }
 }

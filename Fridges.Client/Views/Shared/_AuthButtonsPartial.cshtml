@@ -12,20 +12,15 @@
         {
             <a class="nav-link text-dark" asp-controller="Auth" asp-action="LogOut">Sign out</a>
 
-            var jwtHandler = new JwtSecurityTokenHandler();
-            var tokenContent = jwtHandler.ReadToken(jwtToken) as JwtSecurityToken;
-            var claims = tokenContent.Claims.Where(claim => claim.Type == ClaimTypes.Role);
-            var roles = claims.Select(claim => claim.Value);
-
-            if (roles.Contains("Admin"))
+            if (JwtManager.IsAllowed(Context, "Admin"))
             {
                 <a class="nav-link text-dark" asp-controller="Auth" asp-action="GiveRoles">Give roles</a>
             }
-            if (roles.Contains("Fridge-maker"))
+            if (JwtManager.IsAllowed(Context, "Fridge-maker"))
             {
                 <a class="nav-link text-dark" asp-controller="FridgeModel" asp-action="GetAllFridgeModels">Edit Fridge models</a>
             }
-            if (roles.Contains("Product-maker"))
+            if (JwtManager.IsAllowed(Context, "Product-maker"))
             {
                 <a class="nav-link text-dark" asp-controller="Product" asp-action="GetAllProducts">Edit Products</a>
             }

@@ -1,6 +1,8 @@
 ﻿using Fridges.Client.Models.DTOs;
 using Fridges.Client.Models.Entities;
 using Fridges.Client.Services.Interfaces;
+using Microsoft.Net.Http.Headers;
+using System.Text.Json;
 
 namespace Fridges.Client.Services.Implementations;
 
@@ -49,18 +51,81 @@ public class ProductService : IProductService
         return product;
     }
 
-    public Product CreateProduct(CreateProductDto createProductDto)
+    public async Task<string> CreateProduct(Product product)
     {
-        throw new NotImplementedException();
+        var jwtToken = _httpContextAccessor.HttpContext.Session.GetString("jwtToken");
+        _httpClient.DefaultRequestHeaders.Add(HeaderNames.Authorization, "Bearer " + jwtToken);
+
+        var uri = _httpClient.BaseAddress;
+
+        var createProductDto = new CreateProductDto()
+        {
+            Name = product.Name,
+            DefaultQuantity = product.DefaultQuantity
+        };
+
+        var json = JsonSerializer.Serialize(createProductDto);
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Post,
+            RequestUri = uri,
+            Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+        };
+
+        using var response = await _httpClient.SendAsync(request);
+        if (response.IsSuccessStatusCode)
+        {
+            return String.Empty;
+        }
+
+        string errorMessage = await response.Content.ReadAsStringAsync();
+        errorMessage = errorMessage.Substring(10, errorMessage.Length - 12);
+
+        return errorMessage;
     }
 
-    public Product UpdateProduct(UpdateProductDto updateProductDto)
+    public async Task<string> UpdateProduct(Product product)
     {
-        throw new NotImplementedException();
+        var jwtToken = _httpContextAccessor.HttpContext.Session.GetString("jwtToken");
+        _httpClient.DefaultRequestHeaders.Add(HeaderNames.Authorization, "Bearer " + jwtToken);
+
+        var uri = _httpClient.BaseAddress;
+
+        var updateProductDto = new UpdateProductDto()
+        {
+            Id = product.Id,
+            Name = product.Name,
+            DefaultQuantity = product.DefaultQuantity
+        };
+
+        var json = JsonSerializer.Serialize(updateProductDto);
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Put,
+            RequestUri = uri,
+            Content = new StringContent(json, System.Text.Encoding.UTF8, "application/json")
+        };
+
+        using var response = await _httpClient.SendAsync(request);
+        if (response.IsSuccessStatusCode)
+        {
+            return String.Empty;
+        }
+
+        string errorMessage = await response.Content.ReadAsStringAsync();
+        errorMessage = errorMessage.Substring(10, errorMessage.Length - 12);
+
+        return errorMessage;
     }
 
-    public void DeleteProduct(Guid productId)
+    public async Task DeleteProduct(Guid productId)
     {
-        throw new NotImplementedException();
+        var jwtToken = _httpContextAccessor.HttpContext.Session.GetString("jwtToken");
+        _httpClient.DefaultRequestHeaders.Add(HeaderNames.Authorization, "Bearer " + jwtToken);
+
+        var uri = _httpClient.BaseAddress + productId.ToString();
+        var request = new HttpRequestMessage(HttpMethod.Delete, uri);
+
+        using var response = await _httpClient.SendAsync(request);
     }
 }

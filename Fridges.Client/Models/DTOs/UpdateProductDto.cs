@@ -4,7 +4,7 @@ namespace Fridges.Client.Models.DTOs;
 
 public class UpdateProductDto
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
 
     [MaxLength(30)]
     public string Name { get; set; }

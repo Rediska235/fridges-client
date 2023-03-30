@@ -28,7 +28,7 @@
                         <td>
                             <div class="btn-group">
                                 <a onclick="showInPopup('@Url.Action("Edit", "Fridge", new { Id= item.Id })','Edit fridge')" class="btn btn-warning">Edit</a>
-                                <button class="btn btn-danger" onclick="jQueryAjaxDelete('fridges/delete/@item.Id', 'fridge')">Delete</button>
+                                <button class="btn btn-danger" onclick="jQueryAjaxDelete('delete/@item.Id', 'fridge')">Delete</button>
                             </div>
                         </td>
                     </tr>

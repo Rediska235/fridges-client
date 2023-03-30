@@ -38,7 +38,7 @@ public class FridgeController : Controller
         var fridgeModels = _fridgeModelService.GetAllFridgeModels().Result;
         ViewBag.FridgeModels = fridgeModels;
         ViewBag.Action = "Create";
-        return View("_FormPartial");
+        return View("_FridgeFormPartial");
     }
 
     [HttpPost("create")]
@@ -64,10 +64,10 @@ public class FridgeController : Controller
 
         fridgeDto.FridgeModelName = fridgeModelName;
 
-        return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_FormPartial", fridgeDto) });
+        return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_FridgeFormPartial", fridgeDto) });
     }
 
-    [HttpGet("edit/{id}")]
+    [HttpGet("edit/{id:guid}")]
     public async Task<IActionResult> Edit(Guid id)
     {
         var fridgeModels = _fridgeModelService.GetAllFridgeModels().Result;
@@ -84,10 +84,10 @@ public class FridgeController : Controller
             FridgeModelName = fridge.FridgeModel.Name
         };
 
-        return View("_FormPartial", fridgeDto);
+        return View("_FridgeFormPartial", fridgeDto);
     }
 
-    [HttpPost("edit/{id}")]
+    [HttpPost("edit/{id:guid}")]
     public IActionResult Edit(FridgeDto fridgeDto)
     {
         if (ModelState.IsValid)
@@ -102,10 +102,10 @@ public class FridgeController : Controller
         ViewBag.FridgeModels = fridgeModels;
         ViewBag.Action = "Edit";
 
-        return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_FormPartial", fridgeDto) });
+        return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_FridgeFormPartial", fridgeDto) });
     }
 
-    [HttpPost("delete/{id}")]
+    [HttpPost("delete/{id:guid}")]
     public IActionResult Delete(Guid id)
     {
         _fridgeService.DeleteFridge(id);
