@@ -102,6 +102,8 @@ public class FridgeController : Controller
         ViewBag.FridgeModels = fridgeModels;
         ViewBag.Action = "Edit";
 
+        fridgeDto.FridgeModelName = fridgeModels.FirstOrDefault(fm => fm.Id == fridgeDto.FridgeModelId).Name;
+
         return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_FridgeFormPartial", fridgeDto) });
     }
 

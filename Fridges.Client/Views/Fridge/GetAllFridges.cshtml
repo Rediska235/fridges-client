@@ -5,8 +5,9 @@
     ViewData["Title"] = "Fridges";
 }
 
-<div>
-    <h1 class="text-center">Fridges</h1>
+<div class="d-flex justify-content-between p-3">
+    <h2>Fridges</h2>
+    <a onclick="showInPopup('@Url.Action("Create")','New fridge')" class="btn btn-success">Create new fridge</a>
 </div>
 
 <div id="view-all">
@@ -28,7 +29,7 @@
                         <td>
                             <div class="btn-group">
                                 <a onclick="showInPopup('@Url.Action("Edit", "Fridge", new { Id= item.Id })','Edit fridge')" class="btn btn-warning">Edit</a>
-                                <button class="btn btn-danger" onclick="jQueryAjaxDelete('delete/@item.Id', 'fridge')">Delete</button>
+                                <button class="btn btn-danger" onclick="jQueryAjaxDelete('fridges/delete/@item.Id', 'fridge')">Delete</button>
                             </div>
                         </td>
                     </tr>
@@ -38,4 +39,3 @@
     </div>
 </div>
 
-<a onclick="showInPopup('@Url.Action("Create")','New fridge')" class="btn btn-success">Create new fridge</a>
