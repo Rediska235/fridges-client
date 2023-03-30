@@ -23,9 +23,6 @@ public class FridgeService : IFridgeService
     {
         IEnumerable<Fridge> fridges = new List<Fridge>();
 
-        //var jwtToken = _httpContextAccessor.HttpContext.Session.GetString("jwtToken");
-        //httpClient.DefaultRequestHeaders.Add(HeaderNames.Authorization, "Bearer " + jwtToken);
-
         var response = await _httpClient.GetAsync("");
         if (response.IsSuccessStatusCode)
         {

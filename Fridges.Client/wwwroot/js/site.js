@@ -28,6 +28,7 @@ jQueryAjaxPost = form => {
                 }
                 else {
                     $('#form-modal .modal-body').html(res.html);
+                    $('#give-roles').html(res.html);
                 }
             },
             error: function (err) {

@@ -1,6 +1,7 @@
 ﻿using Fridges.Client.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Fridges.Client.Models.DTOs;
+using Fridges.Client.Models.Entities;
 
 namespace Fridges.Client.Controllers;
 
@@ -71,5 +72,38 @@ public class AuthController : Controller
         _authService.Logout();
 
         return View("Login");
+    }
+
+    [HttpGet("give-roles")]
+    public async Task<IActionResult> GiveRoles()
+    {
+        ViewBag.Users = _authService.GetAllUsers().Result;
+        ViewBag.Roles = _authService.GetAllRoles().Result;
+        ViewBag.Action = "GiveRoles";
+
+        return View();
+    }
+
+    [HttpPost("give-roles")]
+    public async Task<IActionResult> GiveRoles(GiveRoleDto giveRoleDto)
+    {
+        IEnumerable<UserOutputDto> users;
+        if (ModelState.IsValid)
+        {
+            _authService.GiveRoles(giveRoleDto);
+            ViewBag.Users = _authService.GetAllUsers().Result;
+            ViewBag.Roles = _authService.GetAllRoles().Result;
+            ViewBag.Action = "GiveRoles";
+
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GiveRoles", giveRoleDto) });
+            //return View();
+        }
+
+        ViewBag.Users = _authService.GetAllUsers().Result;
+        ViewBag.Roles = _authService.GetAllRoles().Result;
+        ViewBag.Action = "GiveRoles";
+        var a = Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "GiveRoles", giveRoleDto) });
+        return a;
+        //return View(giveRoleDto);
     }
 }
