@@ -19,15 +19,8 @@ public class ProductController : Controller
     [HttpGet]
     public async Task<IActionResult> GetAllProducts()
     {
-        var products = _productService.GetAllProducts();
-        return View(products.Result);
-    }
-
-    [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetProductById(Guid id)
-    {
-        var fridge = _productService.GetProductById(id);
-        return View(fridge.Result);
+        var products = _productService.GetAllProducts().Result;
+        return View(products);
     }
 
     [HttpGet("create")]

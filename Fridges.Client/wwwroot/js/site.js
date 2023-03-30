@@ -51,6 +51,7 @@ jQueryAjaxDelete = (action, objectType) => {
                 url: action,
                 success: function (html) {
                     location.reload();
+                    console.log(action);
                 }
             })
         } catch (ex) {

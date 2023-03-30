@@ -4,11 +4,12 @@ namespace Fridges.Client.Models.Entities;
 
 public class FridgeModel
 {
-    [Key]
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
 
+    [Required]
     [MaxLength(50)]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
+    [Required]
     public int? Year { get; set; }
 }
