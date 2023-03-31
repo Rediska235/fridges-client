@@ -74,6 +74,14 @@ public class AuthController : Controller
         return View("Login");
     }
 
+    [HttpGet("refresh-token")]
+    public async Task<IActionResult> RefreshToken()
+    {
+        _authService.RefreshToken();
+
+        return Ok();
+    }
+
     [HttpGet("give-roles")]
     public async Task<IActionResult> GiveRoles()
     {
@@ -102,8 +110,7 @@ public class AuthController : Controller
         ViewBag.Users = _authService.GetAllUsers().Result;
         ViewBag.Roles = _authService.GetAllRoles().Result;
         ViewBag.Action = "GiveRoles";
-        var a = Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "GiveRoles", giveRoleDto) });
-        return a;
-        //return View(giveRoleDto);
+
+        return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "GiveRoles", giveRoleDto) });
     }
 }

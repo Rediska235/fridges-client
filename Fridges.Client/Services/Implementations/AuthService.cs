@@ -1,7 +1,11 @@
 ﻿using Fridges.Client.Models.DTOs;
 using Fridges.Client.Models.Entities;
 using Fridges.Client.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 
@@ -78,6 +82,27 @@ public class AuthService : IAuthService
     public void Logout()
     {
         _httpContextAccessor.HttpContext.Session.SetString("jwtToken", "");
+    }
+
+    public async Task RefreshToken()
+    {
+        string jwtToken = "";
+
+        bool tokenExist = _httpClient.DefaultRequestHeaders.TryGetValues(HeaderNames.Authorization, out var headerTokens);
+        if (!tokenExist)
+        {
+            jwtToken = _httpContextAccessor.HttpContext.Session.GetString("jwtToken");
+            _httpClient.DefaultRequestHeaders.Add(HeaderNames.Authorization, "Bearer " + jwtToken);
+        }
+
+        var response = _httpClient.GetAsync("refresh-token").Result;
+        if (response.IsSuccessStatusCode)
+        {
+            jwtToken = await response.Content.ReadAsStringAsync();
+            jwtToken = jwtToken.Replace("\"", "");
+
+            _httpContextAccessor.HttpContext.Session.SetString("jwtToken", jwtToken);
+        }
     }
 
     public async Task GiveRoles(GiveRoleDto giveRoleDto)
