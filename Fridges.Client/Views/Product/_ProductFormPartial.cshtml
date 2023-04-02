@@ -25,6 +25,11 @@
                 <span asp-validation-for="DefaultQuantity" class="text-danger"></span>
             </div>
 
+            <div class="form-group">
+                <label asp-for="ImageFile">Select file to upload:</label>
+                <input asp-for="ImageFile" class="form-control-file" />
+            </div>
+
             <div class="form-group mt-3">
                 <input type="submit" value="Save" class="btn btn-primary float-end" />
             </div>

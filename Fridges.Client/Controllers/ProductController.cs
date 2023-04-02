@@ -35,7 +35,7 @@ public class ProductController : Controller
     {
         if (ModelState.IsValid)
         {
-            _productService.CreateProduct(product);
+            await _productService.CreateProduct(product);
             var products = _productService.GetAllProducts();
 
             return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllProducts", products) });
@@ -60,7 +60,7 @@ public class ProductController : Controller
     {
         if (ModelState.IsValid)
         {
-            _productService.UpdateProduct(product);
+            await _productService.UpdateProduct(product);
             var products = _productService.GetAllProducts();
 
             return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllProducts", products) });

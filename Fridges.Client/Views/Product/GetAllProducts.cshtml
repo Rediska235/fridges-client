@@ -17,10 +17,14 @@
 <div class="container">
     <div class="row">
         @{
-            int index = 1;
+            var files = Directory.GetFiles("wwwroot/uploads");
+            files = files.Select(f => f.Substring(16)).ToArray();
+
             @foreach (var item in Model)
             {
-                string src = Url.Content($"~/img/i{index}.png");
+                var imageFile = files.FirstOrDefault(f => f.StartsWith(item.Id.ToString()));
+                var src = Url.Content($"~/uploads/{imageFile}");
+
                 <div class="col-md-3">
                     <div class="card mb-3 shadow-sm">
                         <div class="thumb-content parent">
@@ -41,8 +45,6 @@
                         </div>
                     </div>
                 </div>
-
-                index++;
             }
         }
     </div>

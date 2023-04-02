@@ -1,7 +1,10 @@
 ﻿using Fridges.Client.Models.DTOs;
 using Fridges.Client.Models.Entities;
 using Fridges.Client.Services.Interfaces;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
+using System.IO;
 using System.Text.Json;
 
 namespace Fridges.Client.Services.Implementations;
@@ -11,11 +14,13 @@ public class ProductService : IProductService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private HttpClient _httpClient;
+    private readonly IWebHostEnvironment _environment;
 
-    public ProductService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
+    public ProductService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment environment)
     {
         _httpClientFactory = httpClientFactory;
         _httpContextAccessor = httpContextAccessor;
+        _environment = environment;
 
         _httpClient = _httpClientFactory.CreateClient("Products");
     }
@@ -75,6 +80,11 @@ public class ProductService : IProductService
         using var response = await _httpClient.SendAsync(request);
         if (response.IsSuccessStatusCode)
         {
+            if (product.ImageFile != null)
+            {
+                var productId = response.Headers.Location.ToString().Split('/')[^1];
+                await SaveImageAsync(product.ImageFile, productId);
+            }
             return String.Empty;
         }
 
@@ -109,6 +119,10 @@ public class ProductService : IProductService
         using var response = await _httpClient.SendAsync(request);
         if (response.IsSuccessStatusCode)
         {
+            if (product.ImageFile != null)
+            {
+                await SaveImageAsync(product.ImageFile, product.Id.ToString());
+            }
             return String.Empty;
         }
 
@@ -128,4 +142,26 @@ public class ProductService : IProductService
 
         using var response = await _httpClient.SendAsync(request);
     }
+
+    private async Task SaveImageAsync(IFormFile? file, string fileName)
+    {
+        var allowedExtensions = new[] { ".png", ".jpeg", ".jpg" };
+        var fileExtension = Path.GetExtension(file.FileName);
+        if (!allowedExtensions.Contains(fileExtension))
+        {
+            return;
+        }
+
+        var uploadDir = Path.Combine(_environment.WebRootPath, "uploads");
+        fileName += fileExtension;
+
+        var filePath = Path.Combine(uploadDir, fileName);
+        File.Delete(filePath);
+
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+    }
+    
 }

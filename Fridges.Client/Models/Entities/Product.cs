@@ -14,6 +14,8 @@ public class Product
     [Required]
     public int? DefaultQuantity { get; set; }
 
+    public IFormFile? ImageFile { get; set; }
+
     [JsonIgnore]
     public List<FridgeProduct>? FridgeProducts { get; set; }
 }
