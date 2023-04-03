@@ -6,13 +6,16 @@
     bool isFridgeMaker = JwtManager.IsAllowed(Context, "Fridge-maker");
 }
 
-@if (isFridgeMaker)
+@if (!isFridgeMaker)
 {
-    <div class="d-flex justify-content-between p-3">
-        <h2>Fridge models (admin panel)</h2>
-        <a onclick="showInPopup('@Url.Action("Create")','Add fridge model')" class="btn btn-success float-end">Add fridge model</a>
-    </div>
+    await Html.RenderPartialAsync("_UnauthorizedPartial");
+    return;
 }
+
+<div class="d-flex justify-content-between p-3">
+    <h2>Fridge models (admin panel)</h2>
+    <a onclick="showInPopup('@Url.Action("Create")','Add fridge model')" class="btn btn-success float-end">Add fridge model</a>
+</div>
 
 <div class="table-responsive">
     <table class="table table-striped table-hover">

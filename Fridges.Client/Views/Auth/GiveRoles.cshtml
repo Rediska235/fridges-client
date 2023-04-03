@@ -3,6 +3,13 @@
 @model GiveRoleDto
 @{
     ViewData["Title"] = "Give roles";
+    bool isAdmin = JwtManager.IsAllowed(Context, "Admin");
+}
+
+@if (!isAdmin)
+{
+    await Html.RenderPartialAsync("_UnauthorizedPartial");
+    return;
 }
 
 <div id="give-roles">

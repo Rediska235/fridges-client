@@ -104,7 +104,6 @@ public class AuthController : Controller
             ViewBag.Action = "GiveRoles";
 
             return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GiveRoles", giveRoleDto) });
-            //return View();
         }
 
         ViewBag.Users = _authService.GetAllUsers().Result;
