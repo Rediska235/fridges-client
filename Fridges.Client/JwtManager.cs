@@ -8,7 +8,7 @@ public static class JwtManager
     public static bool IsAllowed(HttpContext context, string role)
     {
         var jwtToken = context.Session.GetString("jwtToken");
-        if(String.IsNullOrEmpty(jwtToken))
+        if (String.IsNullOrEmpty(jwtToken))
         {
             return false;
         }
@@ -19,5 +19,19 @@ public static class JwtManager
         var roles = claims.Select(claim => claim.Value);
 
         return roles.Contains(role);
+    }
+    public static string GetUsername(HttpContext context)
+    {
+        var jwtToken = context.Session.GetString("jwtToken");
+        if (String.IsNullOrEmpty(jwtToken))
+        {
+            return "";
+        }
+
+        var jwtHandler = new JwtSecurityTokenHandler();
+        var tokenContent = jwtHandler.ReadToken(jwtToken) as JwtSecurityToken;
+        var username = tokenContent.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+
+        return username;
     }
 }

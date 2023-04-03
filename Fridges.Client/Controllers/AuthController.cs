@@ -30,7 +30,7 @@ public class AuthController : Controller
 
             if (String.IsNullOrEmpty(errorMessage))
             {
-                return RedirectToAction("GetAllFridges", "Fridge");
+                return RedirectToAction("Index", "Home");
             }
 
             ViewData["ErrorMessage"] = errorMessage;
@@ -55,7 +55,7 @@ public class AuthController : Controller
 
             if (String.IsNullOrEmpty(errorMessage))
             {
-                return RedirectToAction("GetAllFridges", "Fridge");
+                return RedirectToAction("Index", "Home");
             }
 
             ViewData["ErrorMessage"] = errorMessage;
@@ -71,7 +71,7 @@ public class AuthController : Controller
     {
         _authService.Logout();
 
-        return View("Login");
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpGet("refresh-token")]
@@ -79,7 +79,7 @@ public class AuthController : Controller
     {
         _authService.RefreshToken();
 
-        return Ok();
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpGet("give-roles")]

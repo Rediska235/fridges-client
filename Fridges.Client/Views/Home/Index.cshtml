@@ -1,8 +1,20 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var username = @JwtManager.GetUsername(Context);
+    if(String.IsNullOrEmpty(username))
+    {
+        username = "guest";
+    }
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>This is the place to store your fridges.</p>
+<div class="container">
+    <div class="d-flex align-items-center justify-content-center" style="min-height: 60vh;">
+        <div class="text-center">
+            <h1 class="display-4">
+                Welcome, guest.
+            </h1>
+            <p>This is the place to store your fridges.</p>
+            <p>Have fun using our service.😃</p>
+        </div>
+    </div>
 </div>
