@@ -10,7 +10,7 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
 });
 
-string host = "https://localhost:7256/api/";
+string host = builder.Configuration["Host"];
 builder.Services.AddHttpClient("Fridges", httpClient =>
 {
     httpClient.BaseAddress = new Uri(host + "fridges/");

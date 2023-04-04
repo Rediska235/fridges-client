@@ -150,6 +150,14 @@ public class FridgeService : IFridgeService
         var uri = _httpClient.BaseAddress + fridgeId.ToString();
         var request = new HttpRequestMessage(HttpMethod.Delete, uri);
 
-        using var response = await _httpClient.SendAsync(request);
+       await _httpClient.SendAsync(request);
+    }
+
+    public async Task UpdateQuantity()
+    {
+        var uri = _httpClient.BaseAddress;
+        var request = new HttpRequestMessage(HttpMethod.Patch, uri);
+
+        await _httpClient.SendAsync(request);
     }
 }

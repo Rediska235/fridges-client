@@ -151,4 +151,12 @@ public class FridgeController : Controller
 
         return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetFridgeById", fridge) });
     }
+
+    [HttpPost("update-quantity")]
+    public IActionResult UpdateQuantity()
+    {
+        _fridgeService.UpdateQuantity();
+
+        return RedirectToAction("Index", "Home");
+    }
 }
