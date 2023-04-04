@@ -1,6 +1,6 @@
-﻿using Fridges.Client.Services.Interfaces;
-using Fridges.Client.Models.DTOs;
+﻿using Fridges.Client.Models.DTOs;
 using Fridges.Client.Models.Entities;
+using Fridges.Client.Services.Interfaces;
 using System.Text.Json;
 
 namespace Fridges.Client.Services.Implementations;
@@ -78,7 +78,7 @@ public class FridgeService : IFridgeService
 
         await _httpClient.SendAsync(request);
     }
-    
+
     public void UpdateProductsQuantity()
     {
 
@@ -150,7 +150,7 @@ public class FridgeService : IFridgeService
         var uri = _httpClient.BaseAddress + fridgeId.ToString();
         var request = new HttpRequestMessage(HttpMethod.Delete, uri);
 
-       await _httpClient.SendAsync(request);
+        await _httpClient.SendAsync(request);
     }
 
     public async Task UpdateQuantity()

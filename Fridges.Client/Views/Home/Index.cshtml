@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
     var username = @JwtManager.GetUsername(Context);
-    if(String.IsNullOrEmpty(username))
+    if (String.IsNullOrEmpty(username))
     {
         username = "guest";
     }
@@ -19,8 +19,10 @@
     </div>
 </div>
 
-<div class="">
-    <form asp-action="UpdateQuantity" asp-controller="Fridge" method="post">
-        <button class="btn btn-warning float-end" onclick="updateQuantities()">Update quantities</button>
-    </form>
+<div class="container">
+    <div class="d-flex align-items-end justify-content-end" style="min-height: 20vh;">
+        <form asp-action="UpdateQuantity" asp-controller="Fridge" method="post">
+            <button class="btn btn-warning" onclick="updateQuantities()">Update quantities</button>
+        </form>
+    </div>
 </div>

@@ -1,5 +1,4 @@
-﻿using Fridges.Client.Models.DTOs;
-using Fridges.Client.Models.Entities;
+﻿using Fridges.Client.Models.Entities;
 
 namespace Fridges.Client.Models.DTOs;
 

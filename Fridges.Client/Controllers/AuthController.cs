@@ -1,7 +1,6 @@
-﻿using Fridges.Client.Services.Interfaces;
+﻿using Fridges.Client.Models.DTOs;
+using Fridges.Client.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Fridges.Client.Models.DTOs;
-using Fridges.Client.Models.Entities;
 
 namespace Fridges.Client.Controllers;
 

@@ -1,7 +1,6 @@
 ﻿using Fridges.Client.Models.DTOs;
 using Fridges.Client.Models.Entities;
 using Fridges.Client.Services.Interfaces;
-using Microsoft.CodeAnalysis;
 using Microsoft.Net.Http.Headers;
 using System.Text.Json;
 

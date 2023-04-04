@@ -1,11 +1,7 @@
 ﻿using Fridges.Client.Models.DTOs;
 using Fridges.Client.Models.Entities;
 using Fridges.Client.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Net;
 using System.Text;
 using System.Text.Json;
 

@@ -1,10 +1,7 @@
 ﻿using Fridges.Client.Models.DTOs;
 using Fridges.Client.Models.Entities;
 using Fridges.Client.Services.Interfaces;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
-using System.IO;
 using System.Text.Json;
 
 namespace Fridges.Client.Services.Implementations;
@@ -42,7 +39,7 @@ public class ProductService : IProductService
     {
         var product = new Product();
 
-        if(productId == null)
+        if (productId == null)
         {
             return product;
         }
@@ -163,5 +160,5 @@ public class ProductService : IProductService
             await file.CopyToAsync(stream);
         }
     }
-    
+
 }

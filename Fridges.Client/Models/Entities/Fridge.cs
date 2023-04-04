@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Fridges.Client.Models.Entities;
 
-public class Fridge 
+public class Fridge
 {
     [Key]
     public Guid Id { get; set; }
