@@ -25,7 +25,7 @@ public class AuthController : Controller
     {
         if (ModelState.IsValid)
         {
-            string errorMessage = _authService.Register(user).Result;
+            string errorMessage = await _authService.Register(user);
 
             if (String.IsNullOrEmpty(errorMessage))
             {
@@ -50,7 +50,7 @@ public class AuthController : Controller
     {
         if (ModelState.IsValid)
         {
-            string errorMessage = _authService.Login(user).Result;
+            string errorMessage = await _authService.Login(user);
 
             if (String.IsNullOrEmpty(errorMessage))
             {
@@ -84,8 +84,8 @@ public class AuthController : Controller
     [HttpGet("give-roles")]
     public async Task<IActionResult> GiveRoles()
     {
-        ViewBag.Users = _authService.GetAllUsers().Result;
-        ViewBag.Roles = _authService.GetAllRoles().Result;
+        ViewBag.Users = await _authService.GetAllUsers();
+        ViewBag.Roles = await _authService.GetAllRoles();
         ViewBag.Action = "GiveRoles";
 
         return View();
@@ -97,16 +97,16 @@ public class AuthController : Controller
         IEnumerable<UserOutputDto> users;
         if (ModelState.IsValid)
         {
-            _authService.GiveRoles(giveRoleDto);
-            ViewBag.Users = _authService.GetAllUsers().Result;
-            ViewBag.Roles = _authService.GetAllRoles().Result;
+            await _authService.GiveRoles(giveRoleDto);
+            ViewBag.Users = await _authService.GetAllUsers();
+            ViewBag.Roles = await _authService.GetAllRoles();
             ViewBag.Action = "GiveRoles";
 
             return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GiveRoles", giveRoleDto) });
         }
 
-        ViewBag.Users = _authService.GetAllUsers().Result;
-        ViewBag.Roles = _authService.GetAllRoles().Result;
+        ViewBag.Users = await _authService.GetAllUsers();
+        ViewBag.Roles = await _authService.GetAllRoles();
         ViewBag.Action = "GiveRoles";
 
         return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "GiveRoles", giveRoleDto) });

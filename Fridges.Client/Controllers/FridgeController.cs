@@ -21,21 +21,21 @@ public class FridgeController : Controller
     [HttpGet]
     public async Task<IActionResult> GetAllFridges()
     {
-        var fridges = _fridgeService.GetAllFridges().Result;
+        var fridges = await _fridgeService.GetAllFridges();
         return View(fridges);
     }
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetFridgeById(Guid id)
     {
-        var fridge = _fridgeService.GetFridgeById(id).Result;
+        var fridge = await _fridgeService.GetFridgeById(id);
         return View(fridge);
     }
 
     [HttpGet("create")]
     public async Task<IActionResult> Create()
     {
-        var fridgeModels = _fridgeModelService.GetAllFridgeModels().Result;
+        var fridgeModels = await _fridgeModelService.GetAllFridgeModels();
         ViewBag.FridgeModels = fridgeModels;
         ViewBag.Action = "Create";
         return View("_FridgeFormPartial");
@@ -46,13 +46,13 @@ public class FridgeController : Controller
     {
         if (ModelState.IsValid)
         {
-            _fridgeService.CreateFridge(fridgeDto);
-            var fridges = _fridgeService.GetAllFridges();
+            await _fridgeService.CreateFridge(fridgeDto);
+            var fridges = await _fridgeService.GetAllFridges();
 
             return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridges", fridges) });
         }
 
-        var fridgeModels = _fridgeModelService.GetAllFridgeModels().Result;
+        var fridgeModels = await _fridgeModelService.GetAllFridgeModels();
         ViewBag.FridgeModels = fridgeModels;
         ViewBag.Action = "Create";
 
@@ -70,7 +70,7 @@ public class FridgeController : Controller
     [HttpGet("edit/{id:guid}")]
     public async Task<IActionResult> Edit(Guid id)
     {
-        var fridgeModels = _fridgeModelService.GetAllFridgeModels().Result;
+        var fridgeModels = await _fridgeModelService.GetAllFridgeModels();
         ViewBag.FridgeModels = fridgeModels;
         var fridge = _fridgeService.GetFridgeById(id).Result.Fridge;
         ViewBag.Action = "Edit";
@@ -88,17 +88,17 @@ public class FridgeController : Controller
     }
 
     [HttpPost("edit/{id:guid}")]
-    public IActionResult Edit(FridgeDto fridgeDto)
+    public async Task<IActionResult> Edit(FridgeDto fridgeDto)
     {
         if (ModelState.IsValid)
         {
-            _fridgeService.UpdateFridge(fridgeDto);
-            var fridges = _fridgeService.GetAllFridges();
+            await _fridgeService.UpdateFridge(fridgeDto);
+            var fridges = await _fridgeService.GetAllFridges();
 
             return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridges", fridges) });
         }
 
-        var fridgeModels = _fridgeModelService.GetAllFridgeModels().Result;
+        var fridgeModels = await _fridgeModelService.GetAllFridgeModels();
         ViewBag.FridgeModels = fridgeModels;
         ViewBag.Action = "Edit";
 
@@ -108,10 +108,10 @@ public class FridgeController : Controller
     }
 
     [HttpPost("delete/{id:guid}")]
-    public IActionResult Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id)
     {
-        _fridgeService.DeleteFridge(id);
-        var fridges = _fridgeService.GetAllFridges();
+        await _fridgeService.DeleteFridge(id);
+        var fridges = await _fridgeService.GetAllFridges();
 
         return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridges", fridges) });
     }
@@ -119,24 +119,24 @@ public class FridgeController : Controller
     [HttpGet("{fridgeId}/products")]
     public async Task<IActionResult> AddProducts()
     {
-        ViewBag.Products = _productService.GetAllProducts().Result;
+        ViewBag.Products = await _productService.GetAllProducts();
         ViewBag.Action = "AddProducts";
 
         return View("_AddProductsPartial");
     }
 
     [HttpPost("{fridgeId:guid}/products")]
-    public IActionResult AddProducts(AddProductsDto addProductsDto)
+    public async Task<IActionResult> AddProducts(AddProductsDto addProductsDto)
     {
         if (ModelState.IsValid)
         {
-            _fridgeService.AddProducts(addProductsDto);
-            var fridge = _fridgeService.GetFridgeById(addProductsDto.FridgeId).Result;
+            await _fridgeService.AddProducts(addProductsDto);
+            var fridge = await _fridgeService.GetFridgeById(addProductsDto.FridgeId);
 
             return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetFridgeById", fridge) });
         }
 
-        ViewBag.Products = _productService.GetAllProducts().Result;
+        ViewBag.Products = await _productService.GetAllProducts();
         ViewBag.Action = "AddProducts";
         ViewBag.ProductName = _productService.GetProductById(addProductsDto.ProductId).Result.Name;
 
@@ -144,18 +144,18 @@ public class FridgeController : Controller
     }
 
     [HttpPost("{fridgeId:guid}/products/{productId:guid}/delete")]
-    public IActionResult DeleteProducts(Guid fridgeId, Guid productId)
+    public async Task<IActionResult> DeleteProducts(Guid fridgeId, Guid productId)
     {
-        _fridgeService.RemoveProducts(fridgeId, productId);
-        var fridge = _fridgeService.GetFridgeById(fridgeId).Result;
+        await _fridgeService.RemoveProducts(fridgeId, productId);
+        var fridge = await _fridgeService.GetFridgeById(fridgeId);
 
         return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetFridgeById", fridge) });
     }
 
     [HttpPost("update-quantity")]
-    public IActionResult UpdateQuantity()
+    public async Task<IActionResult> UpdateQuantity()
     {
-        _fridgeService.UpdateQuantity();
+        await _fridgeService.UpdateQuantity();
 
         return RedirectToAction("Index", "Home");
     }

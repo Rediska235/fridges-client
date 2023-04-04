@@ -17,7 +17,7 @@ public class FridgeModelController : Controller
     [HttpGet]
     public async Task<IActionResult> GetAllFridgeModels()
     {
-        var fridgeModels = _fridgeModelService.GetAllFridgeModels().Result;
+        var fridgeModels = await _fridgeModelService.GetAllFridgeModels();
         return View(fridgeModels);
     }
 
@@ -33,8 +33,8 @@ public class FridgeModelController : Controller
     {
         if (ModelState.IsValid)
         {
-            _fridgeModelService.CreateFridgeModel(fridgeModel);
-            var fridgeModels = _fridgeModelService.GetAllFridgeModels();
+            await _fridgeModelService.CreateFridgeModel(fridgeModel);
+            var fridgeModels = await _fridgeModelService.GetAllFridgeModels();
 
             return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridgeModels", fridgeModels) });
         }
@@ -47,7 +47,7 @@ public class FridgeModelController : Controller
     [HttpGet("edit/{id:guid}")]
     public async Task<IActionResult> Edit(Guid id)
     {
-        var product = _fridgeModelService.GetFridgeModelById(id).Result;
+        var product = await _fridgeModelService.GetFridgeModelById(id);
         ViewBag.Action = "Edit";
 
         return View("_FridgeModelFormPartial", product);
@@ -58,8 +58,8 @@ public class FridgeModelController : Controller
     {
         if (ModelState.IsValid)
         {
-            _fridgeModelService.UpdateFridgeModel(fridgeModel);
-            var fridgeModels = _fridgeModelService.GetAllFridgeModels();
+            await _fridgeModelService.UpdateFridgeModel(fridgeModel);
+            var fridgeModels = await _fridgeModelService.GetAllFridgeModels();
 
             return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridgeModels", fridgeModels) });
         }
@@ -70,10 +70,10 @@ public class FridgeModelController : Controller
     }
 
     [HttpPost("delete/{id:guid}")]
-    public IActionResult Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id)
     {
-        _fridgeModelService.DeleteFridgeModel(id);
-        var products = _fridgeModelService.GetAllFridgeModels();
+        await _fridgeModelService.DeleteFridgeModel(id);
+        var products = await _fridgeModelService.GetAllFridgeModels();
 
         return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "GetAllFridgeModels", products) });
     }

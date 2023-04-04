@@ -25,6 +25,7 @@ public class AuthService : IAuthService
     {
         var uri = new Uri(_httpClient.BaseAddress + "register");
 
+        user.Username = user.Username.Trim();
         var json = JsonSerializer.Serialize(user);
 
         var request = new HttpRequestMessage
@@ -50,6 +51,7 @@ public class AuthService : IAuthService
     {
         var uri = new Uri(_httpClient.BaseAddress + "login");
 
+        user.Username = user.Username.Trim();
         var json = JsonSerializer.Serialize(user);
 
         var request = new HttpRequestMessage
