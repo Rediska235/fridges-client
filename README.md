@@ -7,6 +7,7 @@ This is only a client part of a client-server application.
 ## Features of this project:
 - CRUD operations with fridges, products and fridge-models
 - Validation of all input data
+- The ability to save pictures for products
 
 ## Role-based authorization
 - To work correctly in this application, there must be a user with the "Admin" role!
@@ -20,3 +21,6 @@ This is only a client part of a client-server application.
 ![image](https://user-images.githubusercontent.com/72939751/229916447-8c64f7d8-f2d3-4258-92dd-6bc682af6496.png)
 ![image](https://user-images.githubusercontent.com/72939751/229919421-82bd881f-babc-42a7-b7f1-065ea96dffb3.png)
 ![image](https://user-images.githubusercontent.com/72939751/229917223-2c4ab891-1c09-457c-815b-dc80d07f3c2d.png)
+
+## Installation details
+- Ignore all of the exceptions that pauses the application (they all are handled)
