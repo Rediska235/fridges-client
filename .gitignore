@@ -361,4 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/Fridges.Client/wwwroot/uploads
+
+# exclude everything
+/Fridges.Client/wwwroot/uploads/*
+
+# exception to the rule
+!/Fridges.Client/wwwroot/uploads/.gitkeep 

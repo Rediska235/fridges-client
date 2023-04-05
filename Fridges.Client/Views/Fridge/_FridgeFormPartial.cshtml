@@ -25,9 +25,10 @@
                 <span asp-validation-for="OwnerName" class="text-danger"></span>
             </div>
 
+            <label class="control-label mt-3">FridgeModel</label>
             <input id="fridge-model-input" asp-for="FridgeModelId" type="hidden" />
             <div id="dropdown" class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle mt-3" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     @try
                     {
                         if (Model.FridgeModelName == null)

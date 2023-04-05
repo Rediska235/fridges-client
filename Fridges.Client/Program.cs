@@ -21,7 +21,7 @@ builder.Services.AddHttpClient("Products", httpClient =>
 });
 builder.Services.AddHttpClient("FridgeModels", httpClient =>
 {
-    httpClient.BaseAddress = new Uri(host + "fridgemodels/");
+    httpClient.BaseAddress = new Uri(host + "fridge-models/");
 });
 builder.Services.AddHttpClient("Auth", httpClient =>
 {

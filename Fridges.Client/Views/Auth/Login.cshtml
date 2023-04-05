@@ -17,16 +17,16 @@
                         <form asp-action="Login" method="post">
                             <!-- Username input -->
                             <div class="form-outline mb-4">
+                                <label class="form-label">Username</label>
                                 <span asp-validation-for="Username" class="text-danger"></span>
                                 <input asp-for="Username" type="text" class="form-control" />
-                                <label class="form-label">Username</label>
                             </div>
 
                             <!-- Password input -->
                             <div class="form-outline mb-4">
+                                <label class="form-label">Password</label>
                                 <span asp-validation-for="Password" class="text-danger"></span>
                                 <input asp-for="Password" type="password" class="form-control" />
-                                <label class="form-label">Password</label>
                             </div>
 
                             <!-- Submit button -->
