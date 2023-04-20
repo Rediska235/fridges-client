@@ -1,8 +1,28 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var username = @JwtManager.GetUsername(Context);
+    if (String.IsNullOrEmpty(username))
+    {
+        username = "guest";
+    }
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="d-flex align-items-center justify-content-center" style="min-height: 60vh;">
+        <div class="text-center">
+            <h1 class="display-4">
+                Welcome, @username.
+            </h1>
+            <p>This is the place to store your fridges.</p>
+            <p>Have fun using our service.😃</p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="d-flex align-items-end justify-content-end" style="min-height: 20vh;">
+        <form asp-action="UpdateQuantity" asp-controller="Fridge" method="post">
+            <button class="btn btn-warning" onclick="updateQuantities()">Update quantities</button>
+        </form>
+    </div>
 </div>

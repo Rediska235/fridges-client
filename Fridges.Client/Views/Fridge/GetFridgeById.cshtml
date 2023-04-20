@@ -1,0 +1,43 @@
+﻿@using Fridges.Client.Models.DTOs;
+
+@model FridgeWithProductsDto
+@{
+    ViewData["Title"] = "Fridge";
+}
+
+<div class="d-flex justify-content-between p-3">
+    <h2>@Model.Fridge.Name (@Model.Fridge.OwnerName)</h2>
+    <div class="btn-group">
+        <a onclick="showInPopup('@Model.Fridge.Id/products','Add product')" class="btn btn-success">Add product</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        @{
+            var files = Directory.GetFiles("wwwroot/uploads");
+            files = files.Select(f => f.Substring(16)).ToArray();
+
+            @foreach (var item in Model.Products)
+            {
+                var imageFile = files.FirstOrDefault(f => f.StartsWith(item.Product.Id.ToString()));
+                var src = Url.Content($"~/uploads/{imageFile}");
+
+                <div class="col-md-3">
+                    <div class="card mb-3 shadow-sm">
+                        <div class="thumb-content parent">
+                            <img class="card-img-top img-fluid image-center" src=@src alt=@item.Product.Name>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">@item.Product.Name</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Quantity: @item.Quantity</small>
+                                <button class="btn btn-danger" onclick="jQueryAjaxDelete('@Model.Fridge.Id/products/@item.Product.Id/delete', 'product')">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

@@ -1,0 +1,86 @@
+﻿@using Fridges.Client.Models.DTOs;
+
+@model FridgeDto
+
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="@ViewBag.Action" method="post" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input asp-for="Id" type="hidden" />
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="OwnerName" class="control-label mt-3"></label>
+                <input asp-for="OwnerName" class="form-control" />
+                <span asp-validation-for="OwnerName" class="text-danger"></span>
+            </div>
+
+            <label class="control-label mt-3">FridgeModel</label>
+            <input id="fridge-model-input" asp-for="FridgeModelId" type="hidden" />
+            <div id="dropdown" class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @try
+                    {
+                        if (Model.FridgeModelName == null)
+                        {
+                            <span>Select fridge model</span>
+                        }
+                        else
+                        {
+                            <span>@Model.FridgeModelName</span>
+                        }
+                    }
+                    catch
+                    {
+                        <span>Select fridge model</span>
+                    }
+                </button>
+                <span asp-validation-for="FridgeModelId" class="text-danger"></span>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    @foreach (var fridgeModel in ViewBag.FridgeModels)
+                    {
+                        <li><a class="dropdown-item py-2" fridge-model="@fridgeModel.Id">@fridgeModel.Name</a></li>
+                    }
+                </ul>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary float-end" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var fridgeModelInput = document.getElementById("fridge-model-input");
+    var dropdownMenuButton = document.getElementById("dropdownMenuButton");
+    var dropdownItems = document.querySelectorAll('.dropdown-item');
+
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const selectedItemName = item.innerHTML;
+            const selectedItem = item.getAttribute('fridge-model');
+
+            fridgeModelInput.value = selectedItem;
+            dropdownMenuButton.innerText = selectedItemName;
+        });
+    });
+
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

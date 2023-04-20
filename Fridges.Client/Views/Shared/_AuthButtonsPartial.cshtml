@@ -1,0 +1,29 @@
+﻿@using System.IdentityModel.Tokens.Jwt;
+@using System.Security.Claims;
+
+<ul class="navbar-nav">
+    @{
+        var jwtToken = Context.Session.GetString("jwtToken");
+        if (String.IsNullOrEmpty(jwtToken))
+        {
+            <a class="nav-link text-dark" asp-controller="Auth" asp-action="Login">Sign in</a>
+        }
+        else
+        {
+            <a class="nav-link text-dark" asp-controller="Auth" asp-action="LogOut">Sign out</a>
+
+            if (JwtManager.IsAllowed(Context, "Admin"))
+            {
+                <a class="nav-link text-dark" asp-controller="Auth" asp-action="GiveRoles">Give roles</a>
+            }
+            if (JwtManager.IsAllowed(Context, "Fridge-maker"))
+            {
+                <a class="nav-link text-dark" asp-controller="FridgeModel" asp-action="GetAllFridgeModels">Edit Fridge models</a>
+            }
+            if (JwtManager.IsAllowed(Context, "Product-maker"))
+            {
+                <a class="nav-link text-dark" asp-controller="Product" asp-action="GetAllProducts">Edit Products</a>
+            }
+        }
+    }
+</ul>

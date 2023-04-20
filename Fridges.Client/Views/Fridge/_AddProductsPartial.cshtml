@@ -1,0 +1,80 @@
+﻿@using Fridges.Client.Models.DTOs;
+
+@model AddProductsDto
+
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="@ViewBag.Action" method="post" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="d-flex justify-content-around align-items-center">
+                <div>
+                    <span asp-validation-for="ProductId" class="text-danger"></span>
+                    <input id="product-id-input" asp-for="ProductId" type="hidden" />
+                    <div id="dropdown" class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @try
+                            {
+                                if (ViewBag.ProductName == null)
+                                {
+                                    <span>Select product</span>
+                                }
+                                else
+                                {
+                                    <span>@ViewBag.ProductName</span>
+                                }
+                            }
+                            catch
+                            {
+                                <span>Select product</span>
+                            }
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            @foreach (var product in ViewBag.Products)
+                            {
+                                <li><a class="dropdown-item py-2" item-value="@product.Id">@product.Name</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                    <input type="number" class="form-control" asp-for="Quantity" min="0" placeholder="Quantity" />
+                </div>
+            </div>
+            
+            <div class="form-group mt-3">
+                <input type="submit" value="Add" class="btn btn-primary float-end" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var productIdInput = document.getElementById("product-id-input");
+    var dropdownMenuButton = document.getElementById("dropdownMenuButton");
+    var dropdownItems = document.querySelectorAll('.dropdown-item');
+
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const selectedItemName = item.innerHTML;
+            const selectedItem = item.getAttribute('item-value');
+
+            productIdInput.value = selectedItem;
+            dropdownMenuButton.innerText = selectedItemName;
+        });
+    });
+
+</script>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

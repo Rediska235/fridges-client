@@ -1,0 +1,51 @@
+﻿@using Fridges.Client.Models.Entities;
+
+@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Products";
+    bool isProductMaker = JwtManager.IsAllowed(Context, "Product-maker");
+}
+
+@if (isProductMaker)
+{
+    <div class="d-flex justify-content-between p-3">
+        <h2>Products (admin panel)</h2>
+        <a onclick="showInPopup('@Url.Action("Create")','Add product')" class="btn btn-success float-end">Add product</a>
+    </div>
+}
+
+<div class="container">
+    <div class="row">
+        @{
+            var files = Directory.GetFiles("wwwroot/uploads");
+            files = files.Select(f => f.Substring(16)).ToArray();
+
+            @foreach (var item in Model)
+            {
+                var imageFile = files.FirstOrDefault(f => f.StartsWith(item.Id.ToString()));
+                var src = Url.Content($"~/uploads/{imageFile}");
+
+                <div class="col-md-3">
+                    <div class="card mb-3 shadow-sm">
+                        <div class="thumb-content parent">
+                            <img class="card-img-top img-fluid image-center" src=@src alt=@item.Name>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">@item.Name</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Default quantity: @item.DefaultQuantity</small>
+                                @if (isProductMaker)
+                                {
+                                    <div class="btn-group">
+                                        <a onclick="showInPopup('@Url.Action("Edit", "Product", new { Id= item.Id })','Edit product')" class="btn btn-warning">Edit</a>
+                                        <button class="btn btn-danger" onclick="jQueryAjaxDelete('products/delete/@item.Id', 'product')">Delete</button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
